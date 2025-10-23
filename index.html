@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Roue automatique</title>
+    <title>Roue automatique avec son</title>
     <style>
         body {
             background: #000;
@@ -22,6 +22,9 @@
 </head>
 <body>
     <canvas id="wheel"></canvas>
+    <audio id="spinSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9b0e8c97ae.mp3?filename=spin-swoosh-8997.mp3"></audio>
+    <audio id="winSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1961fbf6dc.mp3?filename=success-fanfare-trumpets-6185.mp3"></audio>
+
     <script>
         const segments = [
             "La roue des likes", "Caméra", "Costard", "Map", "Voiture", "Prilium", "Follow"
@@ -34,6 +37,9 @@
         let rotation = 0;
         let speed = 0;
         let spinning = false;
+
+        const spinSound = document.getElementById("spinSound");
+        const winSound = document.getElementById("winSound");
 
         function drawWheel() {
             ctx.clearRect(0, 0, size, size);
@@ -51,13 +57,14 @@
                 ctx.fillStyle = "#000";
                 ctx.font = "bold 16px sans-serif";
                 ctx.textAlign = "right";
-                ctx.fillText(text, center - 10, 10);
+                ctx.fillText("TEXTE", center - 10, 10); // placeholder text
                 ctx.restore();
             });
         }
 
         function spin() {
             if (spinning) return;
+            spinSound.play();
             speed = Math.random() * 0.3 + 0.25;
             spinning = true;
             requestAnimationFrame(animate);
@@ -70,6 +77,7 @@
             if (speed < 0.002) {
                 spinning = false;
                 speed = 0;
+                winSound.play();
                 setTimeout(() => window.location.href = "about:blank", 1000);
             } else {
                 requestAnimationFrame(animate);
