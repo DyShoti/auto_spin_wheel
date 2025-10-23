@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Roue automatique avec son distinct</title>
+  <title>Roue automatique avec son personnalisé</title>
   <style>
     body {
       background: #000;
@@ -22,9 +22,7 @@
 </head>
 <body>
   <canvas id="wheel"></canvas>
-  <audio id="winSound" preload="auto">
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/01/audio_d9e3f7b78b.mp3?filename=slot-machine-jackpot-112697.mp3" type="audio/mpeg" />
-  </audio>
+  <audio id="winSound" src="videoplayback-_2_.mp3" preload="auto"></audio>
 
   <script>
     const segments = [
@@ -48,7 +46,7 @@
         ctx.beginPath();
         ctx.moveTo(center, center);
         ctx.arc(center, center, center, angle, angle + arcSize);
-        ctx.fillStyle = i % 2 === 0 ? '#FF4B4B' : '#FF1C1C';  // Couleurs rouges
+        ctx.fillStyle = i % 2 === 0 ? '#FF4B4B' : '#FF1C1C';
         ctx.fill();
         ctx.stroke();
         ctx.save();
@@ -75,16 +73,16 @@
       speed *= 0.985;
       if (speed < 0.002) {
         spinning = false;
-        speed = 0;
         winSound.play();
-        setTimeout(() => window.location.href = "about:blank", 2000);
+        setTimeout(() => window.location.href = "about:blank", 2500);
       } else {
         requestAnimationFrame(animate);
       }
       drawWheel();
     }
+
     drawWheel();
-    setTimeout(spin, 300); // Lancement automatique après 300ms
+    setTimeout(spin, 500);
   </script>
 </body>
 </html>
