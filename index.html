@@ -1,106 +1,91 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Roue automatique rouge avec son</title>
-    <style>
-        body {
-            background: #000;
-            color: white;
-            font-family: sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        #wheel {
-            width: 90vmin;
-            height: 90vmin;
-        }
-        #startOverlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 999;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Roue automatique avec son distinct</title>
+  <style>
+    body {
+      background: #000;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #wheel {
+      width: 90vmin;
+      height: 90vmin;
+    }
+  </style>
 </head>
 <body>
-    <div id="startOverlay">Clique ici pour activer la roue 🎯</div>
-    <canvas id="wheel"></canvas>
-    <audio id="winSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1961fbf6dc.mp3?filename=success-fanfare-trumpets-6185.mp3"></audio>
+  <canvas id="wheel"></canvas>
+  <audio id="winSound" preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/01/audio_d9e3f7b78b.mp3?filename=slot-machine-jackpot-112697.mp3" type="audio/mpeg" />
+  </audio>
 
-    <script>
-        const segments = [
-            "La roue des likes", "Caméra", "Costard", "Map", "Voiture", "Prilium", "Follow"
-        ];
-        const canvas = document.getElementById("wheel");
-        const ctx = canvas.getContext("2d");
-        const size = canvas.width = canvas.height = 600;
-        const center = size / 2;
-        const arcSize = 2 * Math.PI / segments.length;
-        const winSound = document.getElementById("winSound");
+  <script>
+    const segments = [
+      "La roue des likes", "Caméra", "Costard", "Map", "Voiture", "Prilium", "Follow"
+    ];
+    const canvas = document.getElementById("wheel");
+    const ctx = canvas.getContext("2d");
+    const size = canvas.width = canvas.height = 600;
+    const center = size / 2;
+    const arcSize = 2 * Math.PI / segments.length;
+    const winSound = document.getElementById("winSound");
 
-        let rotation = 0;
-        let speed = 0;
-        let spinning = false;
+    let rotation = 0;
+    let speed = 0;
+    let spinning = false;
 
-        function drawWheel() {
-            ctx.clearRect(0, 0, size, size);
-            segments.forEach((text, i) => {
-                const angle = arcSize * i + rotation;
-                ctx.beginPath();
-                ctx.moveTo(center, center);
-                ctx.arc(center, center, center, angle, angle + arcSize);
-                ctx.fillStyle = i % 2 === 0 ? '#FF4B4B' : '#FF1C1C';  // Rouge clair et foncé
-                ctx.fill();
-                ctx.stroke();
-                ctx.save();
-                ctx.translate(center, center);
-                ctx.rotate(angle + arcSize / 2);
-                ctx.fillStyle = "#000";
-                ctx.font = "bold 16px sans-serif";
-                ctx.textAlign = "right";
-                ctx.fillText(text, center - 10, 10);
-                ctx.restore();
-            });
-        }
+    function drawWheel() {
+      ctx.clearRect(0, 0, size, size);
+      segments.forEach((text, i) => {
+        const angle = arcSize * i + rotation;
+        ctx.beginPath();
+        ctx.moveTo(center, center);
+        ctx.arc(center, center, center, angle, angle + arcSize);
+        ctx.fillStyle = i % 2 === 0 ? '#FF4B4B' : '#FF1C1C';  // Couleurs rouges
+        ctx.fill();
+        ctx.stroke();
+        ctx.save();
+        ctx.translate(center, center);
+        ctx.rotate(angle + arcSize / 2);
+        ctx.fillStyle = "#000";
+        ctx.font = "bold 16px sans-serif";
+        ctx.textAlign = "right";
+        ctx.fillText(text, center - 10, 10);
+        ctx.restore();
+      });
+    }
 
-        function spin() {
-            if (spinning) return;
-            speed = Math.random() * 0.3 + 0.25;
-            spinning = true;
-            requestAnimationFrame(animate);
-        }
+    function spin() {
+      if (spinning) return;
+      speed = Math.random() * 0.3 + 0.25;
+      spinning = true;
+      requestAnimationFrame(animate);
+    }
 
-        function animate() {
-            if (!spinning) return;
-            rotation += speed;
-            speed *= 0.985;
-            if (speed < 0.002) {
-                spinning = false;
-                speed = 0;
-                winSound.play();
-                setTimeout(() => window.location.href = "about:blank", 1500);
-            } else {
-                requestAnimationFrame(animate);
-            }
-            drawWheel();
-        }
+    function animate() {
+      if (!spinning) return;
+      rotation += speed;
+      speed *= 0.985;
+      if (speed < 0.002) {
+        spinning = false;
+        speed = 0;
+        winSound.play();
+        setTimeout(() => window.location.href = "about:blank", 2000);
+      } else {
+        requestAnimationFrame(animate);
+      }
+      drawWheel();
+    }
 
-        drawWheel();
-
-        document.getElementById("startOverlay").addEventListener("click", () => {
-            document.getElementById("startOverlay").style.display = "none";
-            spin();
-        });
-    </script>
+    drawWheel();
+    setTimeout(spin, 300); // Lancement automatique après 300ms
+  </script>
 </body>
 </html>
