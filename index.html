@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Roue automatique avec son</title>
+    <title>Roue automatique rouge avec son</title>
     <style>
         body {
             background: #000;
@@ -28,6 +28,7 @@
             color: white;
             font-size: 24px;
             cursor: pointer;
+            z-index: 999;
         }
     </style>
 </head>
@@ -58,7 +59,7 @@
                 ctx.beginPath();
                 ctx.moveTo(center, center);
                 ctx.arc(center, center, center, angle, angle + arcSize);
-                ctx.fillStyle = i % 2 === 0 ? '#00C896' : '#FFC738';
+                ctx.fillStyle = i % 2 === 0 ? '#FF4B4B' : '#FF1C1C';  // Rouge clair et foncé
                 ctx.fill();
                 ctx.stroke();
                 ctx.save();
@@ -98,7 +99,7 @@
 
         document.getElementById("startOverlay").addEventListener("click", () => {
             document.getElementById("startOverlay").style.display = "none";
-            spin(); // autorise le son et déclenche le spin
+            spin();
         });
     </script>
 </body>
